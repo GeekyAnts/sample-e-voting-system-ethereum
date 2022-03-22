@@ -66,6 +66,8 @@ Electronic voting systems must be legitimate, accurate, safe, and convenient whe
 
 # Let's start with E-Voting Smart Contracts
 
+[Do platform Setup! ](SETUP.md)
+
 ## Solidity Functions
 
 ### Modifiers

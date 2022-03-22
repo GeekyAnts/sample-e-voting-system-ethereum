@@ -1,5 +1,4 @@
-**Smart
-Contracts**
+## Smart Contracts
 
 Smart contracts are
 **self-executing** contracts with the terms of the agreement
@@ -12,7 +11,7 @@ parties without the need for a central authority, legal system, or
 external enforcement mechanism. They render transactions **traceable**,
 **transparent**, and **irreversible**.
 
-**Blockchain**
+## Blockchain
 
 The smart contracts
 are developed for the **ethereum** blockchain. Ethereum is a
@@ -30,7 +29,9 @@ contract. When you publish a smart contract, or execute a function of
 a smart contract, or transfer money to another account, you pay some
 ether that gets converted into gas.
 
-**Platforms**
+If you want to get started with your first smart contract, you can follow [Setting up solidity and writing our first smart contract](https://hashnode.com/preview/6236b3f0bef4c71aa6f111ac) artical and write your first contract.
+
+## Platforms
 
 **High Level Languages** for smart contract
 developing:
@@ -294,20 +295,3 @@ Network interface => Ganache
 - To install `truffle` call `npm install -g truffle`
 - Download `Ganache` from https://trufflesuite.com/ganache/
 - `truffle` will automatically install `solidity`
-
-## E-Voting
-
-- To fetch all the candidates who are participating in elections <span>call</span> `getCandidateList()` by passing the `voterAadharNumber` in order to fetch list that belongs to the same constituency (Returns `list of objects`)
-- To check whether the current logged-in user has voted or not <span>call</span> `didCurrentVoterVoted()` by passing the aadhar number of the current logged-in user `voterAadharNumber` (Returns `boolean` & `candidate` object if already voted)
-- To cast the vote <span>send</span> the details of politican aadhar & voter aadhar numbers to `vote()` method of the contract. Strictly check whether candidate is already casted his/her vote prior to calling this method. Otherwise this will throw error.
-- To check when the voting lines will be closed, <span>call</span> `getVotingEndTime()` method of contract to get the end epoch timestamp in UTC. (Returns `uint256` epoch in UTC).
-- To check the results <span>call</span> `allCandidatesWithVoteCount()` by passing the `current epoch time in UTC` timezone. (Returns all candidate `object` with respective votes count)
-
-## Supply chain management (Proof of ownership)
-
-- To fetch all the products that were listed till date, <span>call</span> `getAllProducts()` method provided by the contract. (Returns `list of objects`)
-- To get the products that were associated to the current logged-in user, simply iterate in the above list by checking if the respective user object email is matching with current logged-in user's mail or not.
-- To fetch only single product <span>call</span> `getSingleProducts()` by passing the `productId` which is a unique ID given to the product at the time of product add to the system. (Returns single `object`)
-- To fetch the details of the user <span>call</span> `getPartyDetails()` by passing `email` of the logged-in user & the option that user chooses at the time of login `i.e., supplier, vendor, manufacturer`. If user doesn't exists then it will return empty/null/undefined/object with default values but if user exists then it returns single `object` with user details.
-- Only `Manufacturers` can add the products to the system by <span>sending</span> the email, details of the product to `addProduct()` method of the contract. If product already exists then it throws error.
-- To sell product one can <span>send</span> details by calling `sellProduct()` by passing the purchase party details, product Id & letting the function know who the party is. i.e., supplier, vendor or customer. If the product is not existing then it will throw error.
