@@ -1,0 +1,48 @@
+body {
+  overflow: hidden;
+}
+.logo-hover {
+  transition: all 1s ease-in-out;
+}
+
+.logo-scale:hover {
+  transform: scale(1.5);
+  cursor: pointer;
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: linear-gradient(
+    to right,
+    rgb(179, 220, 237) 0%,
+    rgb(41, 184, 229) 50%,
+    rgb(105, 146, 162) 100%
+  );
+}
+.header img {
+  height: 50px;
+}
+
+.image-bg {
+  background-image: url("https://results.eci.gov.in/images/bg-ban.jpg");
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+@media all and (min-width: 768px) {
+  .header img {
+    height: 70px;
+  }
+}

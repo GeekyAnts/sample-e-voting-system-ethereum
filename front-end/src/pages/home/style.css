@@ -1,0 +1,9 @@
+.cast-vote-button {
+  width: 15%;
+  margin-top: 0.5rem;
+}
+@media screen and (max-width: 800px) {
+  .cast-vote-button {
+    width: 40%; /* The width is 100%, when the viewport is 800px or smaller */
+  }
+}
