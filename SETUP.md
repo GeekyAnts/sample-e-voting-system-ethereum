@@ -29,7 +29,7 @@ contract. When you publish a smart contract, or execute a function of
 a smart contract, or transfer money to another account, you pay some
 ether that gets converted into gas.
 
-If you want to get started with your first smart contract, you can follow [Setting up solidity and writing our first smart contract](https://hashnode.com/preview/6236b3f0bef4c71aa6f111ac) artical and write your first contract.
+If you want to get started with your first smart contract, you can follow [Setting up solidity and writing our first smart contract](https://hashnode.com/preview/6236b3f0bef4c71aa6f111ac) article and write your first contract.
 
 ## Platforms
 
