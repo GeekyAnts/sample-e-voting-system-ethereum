@@ -1,3 +1,7 @@
+<p align="center">
+  <img width="460"  src="https://github.com/GeekyAnts/sample-e-voting-system-ethereum/blob/main/sample-images/4.png?raw=true">
+</p>
+
 ## E- Voting
 
 Electoral integrity is essential not just for democratic nations but also for state voter’s trust and liability. Political voting methods are crucial in this respect. From a government standpoint, electronic voting technologies can boost voter participation and confidence and rekindle interest in the voting system.
