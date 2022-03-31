@@ -21,6 +21,7 @@ export function ConfirmVote({
 
   async function handleOnClick() {
     try {
+      setModalVisible(false);
       await castVote(aadharId, candidate);
       return navigate("/home");
     } catch (error) {

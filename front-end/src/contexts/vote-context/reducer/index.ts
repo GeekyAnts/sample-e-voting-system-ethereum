@@ -6,6 +6,7 @@ const initialState: VoteStateType = {
   voteTiming: "",
   checkVoteRes: undefined,
   votedCandidate: undefined,
+  loading: false,
   winnerCandidate: undefined,
 };
 
@@ -14,6 +15,9 @@ export function voteReducer(
   action: VoteActions
 ): VoteStateType {
   switch (action.type) {
+    case VOTING.SET_LOADING:
+      return { ...state, loading: action.payload };
+
     case VOTING.GET_ALL_CANDIDATE:
       return { ...state, allCandidates: action.payload };
 
@@ -51,6 +55,9 @@ export function voteReducer(
         ...state,
         checkVoteRes: checkVoteData,
       };
+      
+    case VOTING.RESET:
+      return initialState;
 
     default:
       return state;

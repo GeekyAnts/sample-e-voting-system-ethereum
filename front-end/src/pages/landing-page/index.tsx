@@ -1,5 +1,4 @@
 import { Button, HStack, Text, VStack } from "native-base";
-import { useEffect } from "react";
 import { useNavigate } from "react-router";
 import { Layout, MainText } from "../../components";
 import { useAuthContext } from "../../contexts";
@@ -9,9 +8,6 @@ export function LandingPage() {
   } = useAuthContext();
   let navigate = useNavigate();
 
-  useEffect(() => {
-    document.body.style.overflow = "hidden";
-  }, []);
   return (
     <Layout>
       <div className="image-bg">

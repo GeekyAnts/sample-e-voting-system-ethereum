@@ -26,7 +26,7 @@ const Routes = () => {
     dispatch(setLoginStatus(true));
     dispatch(setAadharID(userStatus));
   }
-  console.log(isUserLoggedIn, "isUserLoggedIn", userStatus);
+
   return (
     <ParentRoutes>
       <Route path="/" element={<LandingPage />} />

@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Flex,
   FormControl,
   Heading,
   HStack,
@@ -10,7 +11,7 @@ import {
   VStack,
 } from "native-base";
 import { BsCheckCircle } from "react-icons/bs";
-import { Layout } from "../../components";
+import { Layout, Loader } from "../../components";
 import { constituency, states } from "./data";
 import { useEffect, useState } from "react";
 import { Candidate } from "../../repository/interfaces";
@@ -19,47 +20,58 @@ import { useVote } from "../../hooks";
 import { useVoteContext } from "../../contexts";
 
 export function ResultsPage() {
-  const [selectedState, setSelectedState] = useState("10");
+  const [selectedState, setSelectedState] = useState(10);
   const [renderConstituencey, setRenderConstituencey] = useState([""]);
-  const [selectedConstituency, setSelectedConstituency] = useState("1");
+  const [selectedConstituency, setSelectedConstituency] = useState(1);
   const [selectedCandidates, setSelectedCandidates] = useState<Candidate[]>();
   const [totalVoteCount, setTotalVoteCount] = useState(0);
   const navigate = useNavigate();
   const {
-    state: { winnerCandidate },
+    state: { winnerCandidate, loading },
   } = useVoteContext();
-  const { getWinnerCandidate } = useVote();
+  const { getResult } = useVote();
   useEffect(() => {
     document.body.style.overflowY = "scroll";
-    getWinnerCandidate();
+    getResult();
   }, []);
 
   useEffect(() => {
-    if (selectedState !== "") {
+    if (selectedState !== undefined) {
       setRenderConstituencey(Object.keys(constituency[selectedState] ?? []));
     }
   }, [selectedState]);
 
   useEffect(() => {
-    setSelectedConstituency(renderConstituencey[0]);
+    setSelectedConstituency(parseInt(renderConstituencey[0]));
   }, [renderConstituencey]);
 
   useEffect(() => {
-    const data =
+    let data =
       winnerCandidate &&
-      winnerCandidate.filter(
-        (i) =>
+      winnerCandidate.filter((i) => {
+        return (
           i.stateCode === selectedState &&
           i.constituencyCode === selectedConstituency
-      );
+        );
+      });
+
     if (data) {
-      setSelectedCandidates(data);
+      var candidateModel: Candidate[] = [];
+      for (let i = 0; i < data.length; i++) {
+        let d = { ...data[i] };
+        d.aadharNumber = data[i].aadharNumber.toString();
+        d.voteCount = data[i].voteCount.toString();
+        console.log(d);
+        candidateModel?.push(d);
+      }
+
+      setSelectedCandidates(candidateModel);
 
       setTotalVoteCount(
-        data.reduce((acc, { voteCount }) => (acc += +voteCount), 0)
+        candidateModel.reduce((acc, { voteCount }) => (acc += +voteCount), 0)
       );
     }
-  }, [selectedState, selectedConstituency]);
+  }, [selectedState, selectedConstituency, winnerCandidate]);
 
   return (
     <Layout>
@@ -77,7 +89,13 @@ export function ResultsPage() {
         <Heading size={["sm", "md"]} textAlign="center">
           GEN ELECTION TO VIDHAN SABHA TRENDS & RESULT MARCH-2022
         </Heading>
-        <Box p="2" mt="4" borderWidth={"1"} w="80%" borderColor={"black"}>
+        <Box
+          p="2"
+          mt="4"
+          borderWidth={"1"}
+          w={["80%", "60vw", "80%"]}
+          borderColor={"black"}
+        >
           <Text
             textAlign={"center"}
             fontWeight="semibold"
@@ -103,8 +121,8 @@ export function ResultsPage() {
                     endIcon: <BsCheckCircle size={5} />,
                   }}
                   w={["40", "full"]}
-                  selectedValue={selectedState}
-                  onValueChange={(state) => setSelectedState(state)}
+                  selectedValue={selectedState.toString()}
+                  onValueChange={(state) => setSelectedState(parseInt(state))}
                 >
                   {Object.keys(states).map((state) => (
                     <Select.Item label={states[state]} value={state} />
@@ -129,9 +147,9 @@ export function ResultsPage() {
                     bg: "teal.600",
                     endIcon: <BsCheckCircle size={5} />,
                   }}
-                  selectedValue={selectedConstituency}
+                  selectedValue={selectedConstituency.toString()}
                   onValueChange={(constituency) =>
-                    setSelectedConstituency(constituency)
+                    setSelectedConstituency(parseInt(constituency))
                   }
                 >
                   {renderConstituencey.length !== 0 &&
@@ -163,7 +181,7 @@ export function ResultsPage() {
                 py="1"
                 bg="error.200"
                 borderBottomWidth="2"
-                minW={"70"}
+                minW={["70", "16%"]}
                 borderRightWidth="2"
                 textAlign="center"
               >
@@ -174,7 +192,7 @@ export function ResultsPage() {
                 bg="error.200"
                 textAlign="center"
                 borderBottomWidth="2"
-                minW={"235"}
+                minW={["235", "20%"]}
                 borderRightWidth="2"
               >
                 <Text fontWeight={"semibold"}>Candidate </Text>
@@ -183,7 +201,7 @@ export function ResultsPage() {
                 py="1"
                 bg="error.200"
                 borderBottomWidth="2"
-                minW={"200"}
+                minW={["200", "16%"]}
                 borderRightWidth="2"
                 textAlign="center"
               >
@@ -193,7 +211,7 @@ export function ResultsPage() {
                 py="1"
                 bg="error.200"
                 borderBottomWidth="2"
-                minW={"100"}
+                minW={["100", "16%"]}
                 borderRightWidth="2"
                 textAlign="center"
               >
@@ -204,7 +222,7 @@ export function ResultsPage() {
                 py="1"
                 bg="error.200"
                 borderBottomWidth="2"
-                minW={"100"}
+                minW={["100", "16%"]}
                 borderRightWidth="2"
                 textAlign="center"
               >
@@ -215,14 +233,16 @@ export function ResultsPage() {
                 py="1"
                 bg="error.200"
                 borderBottomWidth="2"
-                minW={"100"}
+                minW={["100", "16%"]}
                 borderRightWidth="2"
                 textAlign="center"
               >
                 <Text fontWeight={"semibold"}>% of Votes</Text>
               </Box>
             </HStack>
-            {selectedCandidates && selectedCandidates.length !== 0 ? (
+            {loading ? (
+              <Loader />
+            ) : selectedCandidates && selectedCandidates.length !== 0 ? (
               selectedCandidates.map(
                 ({
                   aadharNumber,
@@ -234,7 +254,7 @@ export function ResultsPage() {
                   <HStack>
                     <Box
                       py="1"
-                      w={"70"}
+                      w={["70", "16%"]}
                       borderBottomWidth="2"
                       borderRightWidth="2"
                       textAlign="center"
@@ -244,7 +264,7 @@ export function ResultsPage() {
                     <Box
                       py="1"
                       textAlign="center"
-                      w={"235"}
+                      w={["235", "20%"]}
                       borderBottomWidth="2"
                       borderRightWidth="2"
                     >
@@ -252,7 +272,7 @@ export function ResultsPage() {
                     </Box>
                     <Box
                       py="1"
-                      w={"200"}
+                      w={["200", "16%"]}
                       borderBottomWidth="2"
                       borderRightWidth="2"
                       textAlign="center"
@@ -261,7 +281,7 @@ export function ResultsPage() {
                     </Box>
                     <Box
                       py="1"
-                      w={"100"}
+                      w={["100", "16%"]}
                       borderBottomWidth="2"
                       borderRightWidth="2"
                       textAlign="center"
@@ -275,7 +295,7 @@ export function ResultsPage() {
                     </Box>
                     <Box
                       py="1"
-                      w={"100"}
+                      w={["100", "16%"]}
                       borderBottomWidth="2"
                       borderRightWidth="2"
                       textAlign="center"
@@ -284,7 +304,7 @@ export function ResultsPage() {
                     </Box>
                     <Box
                       py="1"
-                      w={"100"}
+                      w={["100", "16%"]}
                       borderBottomWidth="2"
                       borderRightWidth="2"
                       textAlign="center"
@@ -299,7 +319,7 @@ export function ResultsPage() {
             ) : (
               <VStack alignItems={"center"}>
                 <Heading textAlign={"center"} mt="5">
-                  Error! Please Try Again!
+                  Result will be shown here!
                 </Heading>
                 <Button
                   bg={"danger.600"}

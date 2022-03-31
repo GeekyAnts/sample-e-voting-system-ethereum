@@ -10,6 +10,8 @@ import {
   useVoteContext,
 } from "../../../contexts";
 import { useVote } from "../../../hooks";
+import { BallotService } from "../../../repository/ballot";
+import { toastError } from "../../../utils/toastMessage";
 
 export const LoginBox = () => {
   const [aadhar, setAadhar] = useState<string>("");
@@ -32,22 +34,33 @@ export const LoginBox = () => {
     }
   }, []);
 
-  function validate() {
+  async function validate() {
     if (aadhar.length < 12 || !findAadharID(+aadhar)) {
       setError((curr) => ({ ...curr, aadhar: true }));
       return false;
     } else if (otp !== "123456") {
       setError((curr) => ({ ...curr, otp: true }));
       return false;
+    } else {
+      const isVoterEligible = await BallotService.getInstance().isVoterEligible(
+        aadhar
+      );
+      if (!isVoterEligible)
+        toastError(
+          "User age is less than 18 years or User is dead, therefore he can't vote!"
+        );
+      return isVoterEligible;
     }
-    return true;
+    // return true;
   }
   async function userLogin() {
     try {
-      if (validate()) {
+      setLoading(true);
+      if (await validate()) {
         dispatch(setLoginStatus(true));
         dispatch(setAadharID(aadhar));
-        checkVoterEligibility(aadhar);
+        navigate("/home");
+        // checkVoterEligibility(aadhar);
       }
     } catch (error) {
       console.log(error);

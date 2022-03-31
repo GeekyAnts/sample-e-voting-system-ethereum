@@ -10,6 +10,7 @@ export type VoteStateType = {
   checkVoteRes?: CheckVoteStatusResponse;
   votedCandidate?: Candidate;
   winnerCandidate?: Candidate[];
+  loading:boolean;
 };
 
 export type ActionMap<M extends { [index: string]: any }> = {
@@ -30,6 +31,8 @@ type VotePayload = {
   [VOTING.GET_WINNER]: Candidate[];
   [VOTING.SET_VOTE_TIME]: string;
   [VOTING.IS_CANDIDATE_ELIGIBLE]: boolean;
+  [VOTING.SET_LOADING]: boolean;
+  [VOTING.RESET]: any;
 };
 
 export type VoteActions = ActionMap<VotePayload>[keyof ActionMap<VotePayload>];

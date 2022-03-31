@@ -205,9 +205,9 @@ The **web3js framework **works in the following way:
 **Deploying contract**
 
 1. Go to [http://remix.ethereum.org/](http://remix.ethereum.org/)
-   and **upload** your contract file (**User.sol**)
+   and **upload** your contract file (**Ballot.sol**)
 
-2. **Compile** the code. Make sure you’ve slected ‘**User.sol**’
+2. **Compile** the code. Make sure you’ve slected ‘**Ballot.sol**’
    in the dropdown next to details. Ignore warnings.
 
 3. Go to the **run** tab. Make sure ‘**Environment**’ is
@@ -217,7 +217,7 @@ The **web3js framework **works in the following way:
    limit’ and ‘Value’ has little importance on testnet but make
    sure to pay enough gas on livenet.
 
-4. Make sure ‘**User**’ is shown in the dropdown above
+4. Make sure ‘**Ballot**’ is shown in the dropdown above
    ‘**create**’
 
 (If any of the above steps fail, reload the browser)
@@ -240,31 +240,24 @@ access it using a web app.
 
 **Web App**
 
-1. Open **src/js/app.js** file. This is the javascript file
+1. Open **src/repository/ballot.ts** file. This is the typescript file
    that interacts with the contract.
 
-2. Paste your contract address replacing '**contract_address**'
-   in **“web3.eth.contract(abi).at('contract_address');”**
+2. Change the configuration file with contract details at
+   **src/repository/config.tsx**
 
 3. Go to remix page.
    In the **compile** section go to **details** tab. In the **ABI**
    section click on copy button to copy your ABI code.
 
 4. Go to
-   **src/js/app.js** file and paste it replacing ‘**abi_array**’
-   in **var abi = abi_array ;**
+   **src/repository/Ballot.json** file and paste it replacing entire json
 
-5. Open
-   **src/index.html** to open the web app.
+5. Run
+   **npm install && npm start** to open the web app.
 
 **Interacting
 on web App**
-
-Fill up the user
-details and click ‘**add user**’ or ‘**add admin**’. A
-**popup** will open up in metamask. **Submit** the transaction.
-Check transaction status to be ‘**success**’. Then the
-corresponding changes are made on contract.
 
 Fetching details
 from a contract is a ‘**call**’ transaction and would’nt be

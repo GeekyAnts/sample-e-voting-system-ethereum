@@ -4,6 +4,7 @@ pragma solidity >=0.4.25 <0.9.0;
 
 /**
  * @title Ballot
+ * @author Suresh Konakanchi
  * @dev Implements voting process along with winning candidate
  */
 contract Ballot {
@@ -395,7 +396,7 @@ contract Ballot {
             name: "Ruchika",
             aadharNumber: uint256(967746320661),
             age: uint8(26),
-            stateCode: uint8(12),
+            stateCode: uint8(11),
             constituencyCode: uint8(1),
             isAlive: true,
             voted: false,
@@ -405,7 +406,7 @@ contract Ballot {
             name: "Rambabu",
             aadharNumber: uint256(727938171119),
             age: uint8(17),
-            stateCode: uint8(12),
+            stateCode: uint8(11),
             constituencyCode: uint8(1),
             isAlive: true,
             voted: false,
@@ -415,7 +416,7 @@ contract Ballot {
             name: "Matajii",
             aadharNumber: uint256(609015917688),
             age: uint8(98),
-            stateCode: uint8(12),
+            stateCode: uint8(11),
             constituencyCode: uint8(1),
             isAlive: true,
             voted: false,
@@ -425,7 +426,7 @@ contract Ballot {
             name: "Mamata",
             aadharNumber: uint256(620107691388),
             age: uint8(63),
-            stateCode: uint8(12),
+            stateCode: uint8(11),
             constituencyCode: uint8(2),
             isAlive: false,
             voted: false,
@@ -435,7 +436,7 @@ contract Ballot {
             name: "Ravi Varma",
             aadharNumber: uint256(403561319377),
             age: uint8(42),
-            stateCode: uint8(12),
+            stateCode: uint8(11),
             constituencyCode: uint8(2),
             isAlive: true,
             voted: false,
@@ -445,7 +446,7 @@ contract Ballot {
             name: "Rahul",
             aadharNumber: uint256(837970229674),
             age: uint8(56),
-            stateCode: uint8(12),
+            stateCode: uint8(11),
             constituencyCode: uint8(2),
             isAlive: true,
             voted: false,

@@ -8,7 +8,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <Box position="relative" bg="info.800">
       <Header />
-      <Center minHeight={["75vh", "80vh"]}>{children}</Center>
+      <Center minHeight={["75vh", "77.7vh"]}>{children}</Center>
       <Footer />
     </Box>
   );

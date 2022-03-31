@@ -4,8 +4,7 @@ const Ballot = artifacts.require("Ballot");
 * State Code Mappings
    {
      "10": "Andhra Pradesh",
-     "11": "Bihar",
-     "12": "West Bengal"
+     "11": "Bihar"
    }
 * State-Constituency Code Mappings
    {
@@ -17,10 +16,6 @@ const Ballot = artifacts.require("Ballot");
        "1": "Patna",
        "2": "Dehri"
      },
-     "12":{
-       "1": "Kolkata",
-       "2": "Asansol"
-     }
    }
 */
 
@@ -31,7 +26,7 @@ module.exports = function (deployer, network) {
       name: "Chandra Babu Naidu",
       partyShortcut: "TDP",
       partyFlag:
-        "https://slack-imgs.com/?c=1&o1=ro&url=https%3A%2F%2Fi.ibb.co%2F5BMbj7G%2Finc.png",
+        "https://res.cloudinary.com/dj9ttsbgm/image/upload/v1648101065/tdp_qh1rkj.png",
       voteCount: 0,
       aadharNumber: 727477314982,
       stateCode: 10,
@@ -41,7 +36,7 @@ module.exports = function (deployer, network) {
       name: "Jagan Mohan Reddy",
       partyShortcut: "YSRCP",
       partyFlag:
-        "https://slack-imgs.com/?c=1&o1=ro&url=https%3A%2F%2Fi.ibb.co%2F5BMbj7G%2Finc.png",
+        "https://res.cloudinary.com/dj9ttsbgm/image/upload/v1648101065/ysrcp_sas311.png",
       voteCount: 0,
       aadharNumber: 835343722350,
       stateCode: 10,
@@ -51,103 +46,132 @@ module.exports = function (deployer, network) {
       name: "G V Anjaneyulu",
       partyShortcut: "TDP",
       partyFlag:
-        "https://slack-imgs.com/?c=1&o1=ro&url=https%3A%2F%2Fi.ibb.co%2F5BMbj7G%2Finc.png",
+        "https://res.cloudinary.com/dj9ttsbgm/image/upload/v1648101065/tdp_qh1rkj.png",
       voteCount: 0,
       aadharNumber: 969039304119,
       stateCode: 10,
       constituencyCode: 2,
     },
-    // {
-    //   name: "Anil Kumar Yadav",
-    //   partyShortcut: "YSRCP",
-    //   partyFlag: "https://ibb.co/d72NRhK",
-    //   voteCount: 0,
-    //   aadharNumber: 429300763874,
-    //   stateCode: 10,
-    //   constituencyCode: 2,
-    // },
+    {
+      name: "Anil Kumar Yadav",
+      partyShortcut: "YSRCP",
+      partyFlag:
+        "https://res.cloudinary.com/dj9ttsbgm/image/upload/v1648101065/ysrcp_sas311.png",
+      voteCount: 0,
+      aadharNumber: 429300763874,
+      stateCode: 10,
+      constituencyCode: 2,
+    },
     // Bihar
-    // {
-    //   name: "Chandra Babu Naidu",
-    //   partyShortcut: "TDP",
-    //   partyFlag: "https://ibb.co/B4QDMDS",
-    //   voteCount: 0,
-    //   aadharNumber: 895363124093,
-    //   stateCode: 11,
-    //   constituencyCode: 1,
-    // },
-    // {
-    //   name: "Jagan Mohan Reddy",
-    //   partyShortcut: "YSRCP",
-    //   partyFlag: "https://ibb.co/d72NRhK",
-    //   voteCount: 0,
-    //   aadharNumber: 994080299774,
-    //   stateCode: 11,
-    //   constituencyCode: 1,
-    // },
-    // {
-    //   name: "G V Anjaneyulu",
-    //   partyShortcut: "TDP",
-    //   partyFlag: "https://ibb.co/B4QDMDS",
-    //   voteCount: 0,
-    //   aadharNumber: 611996864962,
-    //   stateCode: 11,
-    //   constituencyCode: 2,
-    // },
-    // {
-    //   name: "Anil Kumar Yadav",
-    //   partyShortcut: "YSRCP",
-    //   partyFlag: "https://ibb.co/d72NRhK",
-    //   voteCount: 0,
-    //   aadharNumber: 866627241136,
-    //   stateCode: 11,
-    //   constituencyCode: 2,
-    // },
-    // // West Bengal
-    // {
-    //   name: "Chandra Babu Naidu",
-    //   partyShortcut: "TDP",
-    //   partyFlag: "https://ibb.co/B4QDMDS",
-    //   voteCount: 0,
-    //   aadharNumber: 962912138327,
-    //   stateCode: 12,
-    //   constituencyCode: 1,
-    // },
-    // {
-    //   name: "Jagan Mohan Reddy",
-    //   partyShortcut: "YSRCP",
-    //   partyFlag: "https://ibb.co/d72NRhK",
-    //   voteCount: 0,
-    //   aadharNumber: 960394030700,
-    //   stateCode: 12,
-    //   constituencyCode: 1,
-    // },
-    // {
-    //   name: "G V Anjaneyulu",
-    //   partyShortcut: "TDP",
-    //   partyFlag: "https://ibb.co/B4QDMDS",
-    //   voteCount: 0,
-    //   aadharNumber: 727180476185,
-    //   stateCode: 12,
-    //   constituencyCode: 2,
-    // },
-    // {
-    //   name: "Anil Kumar Yadav",
-    //   partyShortcut: "YSRCP",
-    //   partyFlag: "https://ibb.co/d72NRhK",
-    //   voteCount: 0,
-    //   aadharNumber: 807304648773,
-    //   stateCode: 12,
-    //   constituencyCode: 2,
-    // },
+    {
+      name: "Narendra Modi",
+      partyShortcut: "BJP",
+      partyFlag:
+        "https://res.cloudinary.com/dj9ttsbgm/image/upload/v1648101064/bjp_nk4snw.png",
+      voteCount: 0,
+      aadharNumber: 895363124093,
+      stateCode: 11,
+      constituencyCode: 1,
+    },
+    {
+      name: "Rahul Gandhi",
+      partyShortcut: "INC",
+      partyFlag:
+        "https://res.cloudinary.com/dj9ttsbgm/image/upload/v1648101064/inc_s1oqn5.png",
+      voteCount: 0,
+      aadharNumber: 879824052764,
+      stateCode: 11,
+      constituencyCode: 1,
+    },
+    {
+      name: "Tejaswi Yadav",
+      partyShortcut: "RJD",
+      partyFlag:
+        "https://res.cloudinary.com/dj9ttsbgm/image/upload/v1648101065/1200px-RJD_Flag.svg_arrrvt.png",
+      voteCount: 0,
+      aadharNumber: 994080299774,
+      stateCode: 11,
+      constituencyCode: 1,
+    },
+    {
+      name: "Arvind Kejriwal",
+      partyShortcut: "AAP",
+      partyFlag:
+        "https://res.cloudinary.com/dj9ttsbgm/image/upload/v1648101065/aap_ujguyl.png",
+      voteCount: 0,
+      aadharNumber: 807033055701,
+      stateCode: 11,
+      constituencyCode: 1,
+    },
+    {
+      name: "Jyoti Basu",
+      partyShortcut: "CPIM",
+      partyFlag:
+        "https://res.cloudinary.com/dj9ttsbgm/image/upload/v1648101064/1024px-Cpim_party_symbol.svg_mu1gpp.png",
+      voteCount: 0,
+      aadharNumber: 615325500020,
+      stateCode: 11,
+      constituencyCode: 1,
+    },
+    {
+      name: "Amit Shah",
+      partyShortcut: "BJP",
+      partyFlag:
+        "https://res.cloudinary.com/dj9ttsbgm/image/upload/v1648101064/bjp_nk4snw.png",
+      voteCount: 0,
+      aadharNumber: 611996864962,
+      stateCode: 11,
+      constituencyCode: 2,
+    },
+    {
+      name: "Priyanka Gandhi",
+      partyShortcut: "INC",
+      partyFlag:
+        "https://res.cloudinary.com/dj9ttsbgm/image/upload/v1648101064/inc_s1oqn5.png",
+      voteCount: 0,
+      aadharNumber: 866627241136,
+      stateCode: 11,
+      constituencyCode: 2,
+    },
+    {
+      name: "Lalu Yadav",
+      partyShortcut: "RJD",
+      partyFlag:
+        "https://res.cloudinary.com/dj9ttsbgm/image/upload/v1648101065/1200px-RJD_Flag.svg_arrrvt.png",
+      voteCount: 0,
+      aadharNumber: 765724506305,
+      stateCode: 11,
+      constituencyCode: 2,
+    },
+    {
+      name: "Manish Sisodia",
+      partyShortcut: "AAP",
+      partyFlag:
+        "https://res.cloudinary.com/dj9ttsbgm/image/upload/v1648101065/aap_ujguyl.png",
+      voteCount: 0,
+      aadharNumber: 897855877716,
+      stateCode: 11,
+      constituencyCode: 2,
+    },
+    {
+      name: "Prakash Karat",
+      partyShortcut: "CPIM",
+      partyFlag:
+        "https://res.cloudinary.com/dj9ttsbgm/image/upload/v1648101064/1024px-Cpim_party_symbol.svg_mu1gpp.png",
+      voteCount: 0,
+      aadharNumber: 463774295590,
+      stateCode: 11,
+      constituencyCode: 2,
+    },
   ];
 
   if (network == "development") {
-    deployer.deploy(Ballot, _candidatesData, 1647519867, 1648339201);
+    deployer.deploy(Ballot, _candidatesData, 1648459991, 1869364963);
     // convert the time epoch of when voting ends & to UTC
-    // START => Thursday, 17 March 2022 17:54:27 IST
-    // END => Sunday, 27 March 2022 05:30:01 IST
-  } else if (network == "live") {
-    deployer.deploy(Ballot, _candidatesData, 1647519867, 1648339201);
+    // START => Monday, 28 March 2022 15:03:11
+    // END => Wednesday, 28 March 2029 09:32:43
+  } else {
+    // For all other networks like live & test networks
+    deployer.deploy(Ballot, _candidatesData, 1648459991, 1869364963);
   }
 };

@@ -8,10 +8,12 @@ import {
   setVoteDuration,
   userVoterEligibility,
   setWinner,
+  setLoading,
 } from "../contexts/vote-context";
 import { useVoteContext } from "../contexts/vote-context/";
 import { toastError, toastSuccess } from "../utils/toastMessage";
 import { useNavigate } from "react-router";
+import { setAadharID, setLoginStatus } from "../contexts";
 
 export const useVote = () => {
   const s1 = BallotService.getInstance();
@@ -20,11 +22,13 @@ export const useVote = () => {
 
   const getAllCandidates = useCallback(async (voterAadharNo) => {
     try {
+      dispatch(setLoading(true));
       const listData = await s1.getAllCandidates(voterAadharNo);
-
       dispatch(getAllCandidate(listData));
     } catch (error) {
       toastError("Error while retrieving candidates");
+    } finally {
+      dispatch(setLoading(false));
     }
   }, []);
 
@@ -37,6 +41,9 @@ export const useVote = () => {
         navigate("/home");
       } else {
         toastError("User age is less than 18 years, therefore he can't vote!");
+        window.localStorage.clear();
+        dispatch(setLoginStatus(false));
+        dispatch(userVoterEligibility(isVoterEligible));
         navigate("/");
       }
     } catch (e) {
@@ -65,6 +72,7 @@ export const useVote = () => {
   const castVote = useCallback(
     async (voterAadharNo: string, candidate: Candidate) => {
       try {
+        dispatch(setLoading(true));
         const voteStatus = await s1.castYourVote(
           voterAadharNo,
           candidate.aadharNumber
@@ -77,6 +85,8 @@ export const useVote = () => {
         }
       } catch (e) {
         toastError("Error while casting vote");
+      } finally {
+        dispatch(setLoading(false));
       }
     },
     []
@@ -84,16 +94,27 @@ export const useVote = () => {
 
   const getVoteTiming = useCallback(async () => {
     try {
+      dispatch(setLoading(true));
       const voteTiming = await s1.getVotingTimeDuration();
       dispatch(setVoteDuration(voteTiming));
     } catch (e) {
       toastError("Error while getting vote time");
+    } finally {
+      dispatch(setLoading(false));
     }
   }, []);
 
-  const getWinnerCandidate = useCallback(async () => {
-    const winners = await s1.allCandidatesWithVoteCount();
-    dispatch(setWinner(winners));
+  const getResult = useCallback(async () => {
+    try {
+      dispatch(setLoading(true));
+      const winners = await s1.getElectionResult();
+      console.log(winners);
+      dispatch(setWinner(winners));
+    } catch (error) {
+      toastError("Error while getting results");
+    } finally {
+      dispatch(setLoading(false));
+    }
   }, []);
 
   return {
@@ -101,7 +122,7 @@ export const useVote = () => {
     getAllCandidates,
     checkUserVotingStatus,
     getVoteTiming,
-    getWinnerCandidate,
+    getResult,
     checkVoterEligibility,
   };
 };

@@ -4,6 +4,13 @@ import {
 } from "../../../repository/interfaces";
 import { VOTING } from "../action-types";
 
+export function setLoading(payload: boolean) {
+  return {
+    type: VOTING.SET_LOADING,
+    payload,
+  };
+}
+
 export function getAllCandidate(payload: Candidate[]) {
   return {
     type: VOTING.GET_ALL_CANDIDATE,
@@ -40,5 +47,11 @@ export function userVoterEligibility(payload: boolean) {
   return {
     type: VOTING.IS_CANDIDATE_ELIGIBLE,
     payload,
+  };
+}
+
+export function resetVoteContextStates() {
+  return {
+    type: VOTING.RESET,
   };
 }

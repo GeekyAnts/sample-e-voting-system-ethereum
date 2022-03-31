@@ -19,6 +19,8 @@ export function authReducer(
     }
 
     case AUTH.RESET:
+      localStorage.removeItem("LOGGEDIN_AADHAR_ID");
+      window.localStorage.clear();
       return initialState;
 
     default:

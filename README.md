@@ -1,4 +1,4 @@
-## E- Voting:
+## E- Voting
 
 Electoral integrity is essential not just for democratic nations but also for state voter’s trust and liability. Political voting methods are crucial in this respect. From a government standpoint, electronic voting technologies can boost voter participation and confidence and rekindle interest in the voting system.
 
@@ -155,7 +155,7 @@ Everyone can check the voting results once the voting lines are closed
      * @param currentTime_ Current epoch time of length 10.
      * @return candidateList_ List of Candidate objects
      */
-    function allCandidatesWithVoteCount(uint256 currentTime_)
+    function getResults(uint256 currentTime_)
         public
         view
         returns (Candidate[] memory)
@@ -189,11 +189,11 @@ Node: v14.17.0
 
 ### Deployed to Rinkeby
 
-Contract Address: https://rinkeby.etherscan.io/address/0x259C637f62301218125834396187f29333BD776C
+Contract Address: https://rinkeby.etherscan.io/address/0xB6976cfdA272536c51b0F251855EDa48164485EF
 
 Contract Creator: https://rinkeby.etherscan.io/address/0xF2C9ef86c3c98Fc8C265469624dA35af2D72Fa06
 
-Tx Hash of contract creation :https://rinkeby.etherscan.io/tx/0xc35311bd36315d43e6e3c2694c2f070733675d2f2e96acb8257e503c977f53da
+Tx Hash of contract creation :https://rinkeby.etherscan.io/tx/0x6e0f54b7579fc6e9fcd00aa37d182ab2896471461f46ca09a21f63368bf12eb4
 
 ### Quick Start
 
@@ -250,20 +250,42 @@ _Note Revert back all your local configurations & configure it to point to rinke
 | User Name     | Aadhar Number | State          | Constituency | Age | isAlive |
 | ------------- | ------------- | -------------- | ------------ | --- | ------- |
 | Suresh        | 482253918244  | Andhra Pradesh | Guntur       | 21  | ✅      |
-| Ramesh        | 532122269467  | Andhra Pradesh | Guntur       | 37  | ❎      |
+| Ramesh        | 532122269467  | Andhra Pradesh | Guntur       | 37  | ❌      |
 | Mahesh        | 468065932286  | Andhra Pradesh | Guntur       | 26  | ✅      |
 | Krishna       | 809961147437  | Andhra Pradesh | Krishna      | 19  | ✅      |
 | Narendra      | 908623597782  | Andhra Pradesh | Krishna      | 36  | ✅      |
 | Raghu         | 760344621247  | Andhra Pradesh | Krishna      | 42  | ✅      |
+|               |               |                |              |     |         |
 | Pushkar Kumar | 908704156902  | Bihar          | Patna        | 25  | ✅      |
 | Kunal Kumar   | 778925466180  | Bihar          | Patna        | 37  | ✅      |
+| Aausi         | 756623869645  | Bihar          | Patna        | 85  | ❌      |
+| Ruchika       | 967746320661  | Bihar          | Patna        | 26  | ✅      |
+| Rambabu       | 727938171119  | Bihar          | Patna        | 17  | ✅      |
+| Matajii       | 609015917688  | Bihar          | Patna        | 98  | ✅      |
 | Kumar Sanket  | 393071790055  | Bihar          | Dehri        | 29  | ✅      |
 | Pratik        | 983881786161  | Bihar          | Dehri        | 40  | ✅      |
-| Aausi         | 756623869645  | Bihar          | Patna        | 85  | ❎      |
-| Pratiba       | 588109459505  | Bihar          | Dehri        | 68  | ❎      |
-| Ruchika       | 967746320661  | West Bengal    | Kolkata      | 26  | ✅      |
-| Rambabu       | 727938171119  | West Bengal    | Kolkata      | 17  | ✅      |
-| Matajii       | 609015917688  | West Bengal    | Kolkata      | 98  | ✅      |
-| Mamata        | 620107691388  | West Bengal    | Asansol      | 63  | ❎      |
-| Ravi Varma    | 403561319377  | West Bengal    | Asansol      | 42  | ✅      |
-| Rahul         | 837970229674  | West Bengal    | Asansol      | 56  | ✅      |
+| Pratiba       | 588109459505  | Bihar          | Dehri        | 68  | ❌      |
+| Mamata        | 620107691388  | Bihar          | Dehri        | 63  | ❌      |
+| Ravi Varma    | 403561319377  | Bihar          | Dehri        | 42  | ✅      |
+| Rahul         | 837970229674  | Bihar          | Dehri        | 56  | ✅      |
+
+### Politicians who participate in elections
+
+| Candidate Name     | Party Name | State          | Constituency |
+| ------------------ | ---------- | -------------- | ------------ |
+| Chandra Babu Naidu | TDP        | Andhra Pradesh | Guntur       |
+| Jagan Mohan Reddy  | YSRCP      | Andhra Pradesh | Guntur       |
+| G V Anjaneyulu     | TDP        | Andhra Pradesh | Krishna      |
+| Anil Kumar Yadav   | YSRCP      | Andhra Pradesh | Krishna      |
+|                    |            |                |              |
+| Narendra Modi      | BJP        | Bihar          | Patna        |
+| Rahul Gandhi       | INC        | Bihar          | Patna        |
+| Tejaswi Yadav      | RJD        | Bihar          | Patna        |
+| Arvind Kejriwal    | AAP        | Bihar          | Patna        |
+| Mamata Banarjee    | TMC        | Bihar          | Patna        |
+| Jyoti Basu         | CPIM       | Bihar          | Patna        |
+| Amit Shah          | BJP        | Bihar          | Dehri        |
+| Priyanka Gandhi    | INC        | Bihar          | Dehri        |
+| Lalu Yadav         | RJD        | Bihar          | Dehri        |
+| Manish Sisodia     | AAP        | Bihar          | Dehri        |
+| Prakash Karat      | CPIM       | Bihar          | Dehri        |

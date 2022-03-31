@@ -1,12 +1,18 @@
 import { Box, Button, Text } from "native-base";
 import { useNavigate } from "react-router-dom";
-import { resetStates, useAuthContext } from "../contexts";
+import {
+  resetStates,
+  useAuthContext,
+  useVoteContext,
+  resetVoteContextStates,
+} from "../contexts";
 
 export const AuthPopup = ({ setShowBox }: { setShowBox: any }) => {
   const {
     state: { isUserLoggedIn, aadharId },
     dispatch,
   } = useAuthContext();
+  const { dispatch: voteDispatch } = useVoteContext();
 
   let navigate = useNavigate();
   return (
@@ -43,7 +49,7 @@ export const AuthPopup = ({ setShowBox }: { setShowBox: any }) => {
               setShowBox(false);
               navigate("/");
               dispatch(resetStates());
-              window.localStorage.clear();
+              voteDispatch(resetVoteContextStates());
             }}
             backgroundColor="red.500"
             _hover={{ bg: "red.800" }}
