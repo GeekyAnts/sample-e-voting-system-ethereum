@@ -5,7 +5,7 @@
 // import "../contracts/Ballot.sol";
 
 // contract BallotTest {
-//     Ballot ballotToTest = new Ballot([], 0, 0);
+//     Ballot ballotToTest = new Ballot(1649250142, 1662550200);
 
 //     function isEligibleVoter() public {
 //         assert.equal(

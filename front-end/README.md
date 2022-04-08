@@ -12,7 +12,17 @@ Electronic voting systems must be legitimate, accurate, safe, and convenient whe
 
 ## Problem Statement
 
+In democracies around the world, voting is considered a fundamental process for the citizens of a country to have a say in the people who represent them or an issue that impacts them. In days after American independence, voting usually took place via viva voce, or by voice vote. Later on in 1634, Massachusetts became the first state to elect its governor using paper ballots.
+
+For many years, democracies around the world stayed with paper ballots and later moved on to electronic voting machines. Despite system checks, safeguard procedures, and election protocols, these machines are not tamper proof. The critics believe that the proprietary code by which the electronic voting machines operate are secret and can be manipulated. As a result governments around the world have been exploring blockchain as a medium to make the general elections tamper proof and transparent. A system where everyone trusts the data as it is since counterfeit is not possible.
+
 ## Solution
+
+In comparison to the conventional voting methods, e-voting has enhanced both the efficiency and the integrity of the process. Because of its flexibility, simplicity of use, and cheap cost compared to general elections, electronic voting is widely utilised in various decisions .
+
+Despite this, existing electronic voting methods run the danger of over-authority and manipulated details, limiting fundamental fairness, privacy, secrecy, anonymity, and transparency in the voting process. Since the e-voting procedures are centralised, licensed by the critical authority, controlled, measured, and monitored in an electronic voting system, is a problem itself for a transparent voting process. Recent controversies in modern democracies such as USA and India amplifies the argument.
+
+It is essential to ensure that assurance in voting does not diminish. In this project we will try to leverage blockchain to fix shortcomings in today’s method in elections and make the polling mechanism clear and accessible, stop illegal voting, strengthen the data protection, and transparent outcome of the polling process. Because of the distributed structure of the blockchain, a smart contract based electronic voting system reduces the risks involved with electronic voting and allows for a tamper-proof for the voting system.
 
 ## Implementation of electronic voting:
 
@@ -25,9 +35,9 @@ Electronic voting systems must be legitimate, accurate, safe, and convenient whe
 
 ### Assumptions:
 
-- Digital print of the Voters (Aadhar card) containing all the info with voting eligibility data like age, constituency code, Indian Penal Code information etc updated by Govt. of India.
+- Digital print of the Voters (Aadhar card) containing all the info with voting eligibility data like age, state, district and constituency codes, Indian Penal Code information etc updated by Govt. of India.
 - Eligible voters have to register themselves in the constituency where they live, upon which Govt. will update all the info to Aadhar card. Individuals are not permitted to participate in the electoral process if they have not registered or do not possess an Aadhar card.
-- Only Election Chief can start/update Voting session.
+- Only Election Chief can start/update Voting timelines.
 - One nation one election
 
 ### Who can Vote:
@@ -76,7 +86,7 @@ Electronic voting systems must be legitimate, accurate, safe, and convenient whe
 
 ### Modifiers
 
-```js
+```c++
     /**
      * @notice To check if the voter's age is greater than or equal to 18
      * @param currentTime_ Current epoch time of the voter
@@ -90,14 +100,14 @@ Electronic voting systems must be legitimate, accurate, safe, and convenient whe
     /**
      * @notice To check if the voter's age is greater than or equal to 18
      * @param voterAadhar_ Aadhar number of the current voter
-     * @param candidateAadhar_ Aadhar number of the candidate
+     * @param nominationNumber_ Aadhar number of the candidate
      */
-    modifier isEligibleVote(uint256 voterAadhar_, uint256 candidateAadhar_) {
-        Voter storage voter_ = voter[voterAadhar_];
-        Candidate storage politician_ = candidate[candidateAadhar_];
+    modifier isEligibleVote(uint256 voterAadhar_, uint256 nominationNumber_) {
+        Types.Voter memory voter_ = voter[voterAadhar_];
+        Types.Candidate memory politician_ = candidate[nominationNumber_];
         require(voter_.age >= 18);
         require(voter_.isAlive);
-        require(!voter_.voted);
+        require(voter_.votedTo != 0);
         require(
             (politician_.stateCode == voter_.stateCode &&
                 politician_.constituencyCode == voter_.constituencyCode)
@@ -120,7 +130,7 @@ Electronic voting systems must be legitimate, accurate, safe, and convenient whe
 - start date can only be updated only if the voting process is not started yet
 - Can extend the voting end date after the voting is started & before the voting is ended
 
-```js
+```c++
     /**
      * @dev used to update the voting start & end times
      * @param startTime_ Start time that needs to be updated
@@ -153,35 +163,87 @@ Electronic voting systems must be legitimate, accurate, safe, and convenient whe
 
 Everyone can check the voting results once the voting lines are closed
 
-```js
+```c++
     /**
      * @dev sends all candidate list with their votes count
      * @param currentTime_ Current epoch time of length 10.
-     * @return candidateList_ List of Candidate objects
+     * @return candidateList_ List of Candidate objects with votes count
      */
     function getResults(uint256 currentTime_)
         public
         view
-        returns (Candidate[] memory)
+        returns (Types.Results[] memory)
     {
-        // use "assert" for internal errors where as required for both internal & external
         require(votingEndTime < currentTime_);
-        return candidates;
+        Types.Results[] memory resultsList_ = new Types.Results[](
+            candidates.length
+        );
+        // Since the candidates will be lesser in count than voter.
+        // So looping is acceptable.
+        for (uint256 i = 0; i < candidates.length; i++) {
+            resultsList_[i] = Types.Results({
+                name: candidates[i].name,
+                partyShortcut: candidates[i].partyShortcut,
+                partyFlag: candidates[i].partyFlag,
+                nominationNumber: candidates[i].nominationNumber,
+                stateCode: candidates[i].stateCode,
+                constituencyCode: candidates[i].constituencyCode,
+                voteCount: votesCount[candidates[i].nominationNumber]
+            });
+        }
+        return resultsList_;
+    }
+```
+
+### Custom Types
+
+```c++
+    struct Voter {
+        uint256 aadharNumber; // voter unique ID
+        string name;
+        uint8 age;
+        uint8 stateCode;
+        uint8 constituencyCode;
+        bool isAlive;
+        uint256 votedTo; // aadhar number of the candidate
+    }
+
+    struct Candidate {
+        // Note: If we can limit the length to a certain number of bytes,
+        // we can use one of bytes1 to bytes32 because they are much cheaper
+
+        string name;
+        string partyShortcut;
+        string partyFlag;
+        uint256 nominationNumber; // unique ID of candidate
+        uint8 stateCode;
+        uint8 constituencyCode;
+    }
+
+    struct Results {
+        string name;
+        string partyShortcut;
+        string partyFlag;
+        uint256 voteCount; // number of accumulated votes
+        uint256 nominationNumber; // unique ID of candidate
+        uint8 stateCode;
+        uint8 constituencyCode;
     }
 ```
 
 ### Voting Methods
 
-| Function name           | Modifiers                                | Description                                                                                                                                |
-| ----------------------- | ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| isVoterEligible()       | Any                                      | To check whether voter is eligible to vote or not based on the pre-defined assumptions like the age greater than or equal to 18 & is alive |
-| didCurrentVoterVoted()  | Any                                      | To check if the current voter has casted their or not. If voted then returns the candidate object to whom he/she casted their vote to      |
-| getCandidateList()      | Any                                      | To get the list of candidates who belongs to the current voter constituency                                                                |
-| getVotingEndTime()      | Any                                      | To get the voting end time                                                                                                                 |
-| updateVotingStartTime() | isElectionChief()                        | To update the voting start date & time (Can only be called prior to voting start)                                                          |
-| extendVotingTime()      | isElectionChief()                        | To extend the voting timelines (Can only be done once voting process starts & before the voting ends)                                      |
-| vote()                  | votingLinesAreOpen()<br>isEligibleVote() | To cast one's vote to a particular candidate who belong to their own constituency                                                          |
-| getResults()            | Any                                      | To get the voting results. Can be called by anyone but only after the voting lines are closed                                              |
+| **Function Name**       | **Input Params**                                                                  | **Return Value**                   | **Description**                                                                                                                            |
+| ----------------------- | --------------------------------------------------------------------------------- | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| isVoterEligible()       | voterAadharNumber                                                                 | Boolean `voterEligible_`           | To check whether voter is eligible to vote or not based on the pre-defined assumptions like the age greater than or equal to 18 & is alive |
+| didCurrentVoterVoted()  | voterAadharNumber                                                                 | Boolean `userVoted_`,<br>Candidate | To check if the current voter has casted their vote or not. If voted then returns the candidate object to whom he/she casted their vote to |
+| getVotingEndTime()      | -                                                                                 | End time in `epoch`                | To get the voting end time                                                                                                                 |
+| getCandidateList()      | voterAadharNumber                                                                 | Candidate[]                        | To get the list of candidates who belongs to the current voter constituency                                                                |
+| vote()                  | `nominationNumber` of candidate,<br>voterAadharNumber,<br>current Time in `epoch` | -                                  | To cast one's vote to a particular candidate who belong to their own constituency                                                          |
+| getResults()            | current time in `epoch`                                                           | Results[]                          | To get the voting results. Can be called by anyone but only after the voting lines are closed                                              |
+|                         |                                                                                   |                                    |                                                                                                                                            |
+| updateVotingStartTime() | start time in `epoch`,<br>current time in `epoch`                                 | -                                  | To update the voting start date & time (Can only be called prior to voting start)                                                          |
+| extendVotingTime()      | end time in `epoch`,<br>current time in `epoch`                                   | -                                  | To extend the voting timelines (Can only be done once voting process starts & before the voting ends)                                      |
 
 ### Versions
 
@@ -293,3 +355,10 @@ _Note Revert back all your local configurations & configure it to point to rinke
 | Lalu Yadav         | RJD        | Bihar          | Dehri        |
 | Manish Sisodia     | AAP        | Bihar          | Dehri        |
 | Prakash Karat      | CPIM       | Bihar          | Dehri        |
+
+## Sample Images
+
+<img src="https://github.com/GeekyAnts/sample-e-voting-system-ethereum/blob/main/sample-images/1.png?raw=true"><br>
+<img src="https://github.com/GeekyAnts/sample-e-voting-system-ethereum/blob/main/sample-images/2.png?raw=true"><br>
+<img src="https://github.com/GeekyAnts/sample-e-voting-system-ethereum/blob/main/sample-images/3.png?raw=true"><br>
+<img src="https://github.com/GeekyAnts/sample-e-voting-system-ethereum/blob/main/sample-images/4.png?raw=true"><br>

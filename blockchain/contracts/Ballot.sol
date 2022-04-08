@@ -2,63 +2,34 @@
 pragma experimental ABIEncoderV2;
 pragma solidity >=0.4.25 <0.9.0;
 
+import "./Types.sol";
+
 /**
  * @title Ballot
  * @author Suresh Konakanchi
  * @dev Implements voting process along with winning candidate
  */
 contract Ballot {
-    struct Voter {
-        uint256 aadharNumber; // voter unique ID
-        string name;
-        uint8 age;
-        uint8 stateCode;
-        uint8 constituencyCode;
-        bool isAlive;
-        bool voted; // if true, that person already voted
-        uint256 votedTo; // aadhar number of the candidate
-    }
+    Types.Candidate[] public candidates;
+    mapping(uint256 => Types.Voter) voter;
+    mapping(uint256 => Types.Candidate) candidate;
+    mapping(uint256 => uint256) internal votesCount;
 
-    struct Candidate {
-        // Note: If we can limit the length to a certain number of bytes,
-        // we can use one of bytes1 to bytes32 because they are much cheaper
-
-        string name;
-        string partyShortcut;
-        string partyFlag;
-        uint256 voteCount; // number of accumulated votes
-        uint256 aadharNumber; // unique ID of candidate
-        uint8 stateCode;
-        uint8 constituencyCode;
-    }
-
-    Candidate[] internal candidates;
-    mapping(uint256 => Voter) internal voter;
-    mapping(uint256 => Candidate) internal candidate;
+    address electionChief;
     uint256 private votingStartTime;
     uint256 private votingEndTime;
-    address electionChief;
 
     /**
-     * @dev Create a new ballot to choose one of 'candidateNames'.
-     * @param candidates_ List of Candidates
+     * @dev Create a new ballot to choose one of 'candidateNames'
      * @param startTime_ When the voting process will start
      * @param endTime_ When the voting process will end
      */
-    constructor(
-        Candidate[] memory candidates_,
-        uint256 startTime_,
-        uint256 endTime_
-    ) {
+    constructor(uint256 startTime_, uint256 endTime_) {
+        initializeCandidateDatabase_();
         initializeVoterDatabase_();
         votingStartTime = startTime_;
         votingEndTime = endTime_;
         electionChief = msg.sender;
-        for (uint256 i = 0; i < candidates_.length; i++) {
-            Candidate memory cn_ = candidates_[i];
-            candidate[candidates_[i].aadharNumber] = cn_;
-            candidates.push(cn_);
-        }
     }
 
     /**
@@ -69,34 +40,28 @@ contract Ballot {
     function getCandidateList(uint256 voterAadharNumber)
         public
         view
-        returns (Candidate[] memory)
+        returns (Types.Candidate[] memory)
     {
-        Voter storage voter_ = voter[voterAadharNumber];
+        Types.Voter storage voter_ = voter[voterAadharNumber];
         uint256 _politicianOfMyConstituencyLength = 0;
+
         for (uint256 i = 0; i < candidates.length; i++) {
             if (
                 voter_.stateCode == candidates[i].stateCode &&
                 voter_.constituencyCode == candidates[i].constituencyCode
             ) _politicianOfMyConstituencyLength++;
         }
-        Candidate[] memory cc = new Candidate[](
+        Types.Candidate[] memory cc = new Types.Candidate[](
             _politicianOfMyConstituencyLength
         );
+
         uint256 _indx = 0;
         for (uint256 i = 0; i < candidates.length; i++) {
             if (
                 voter_.stateCode == candidates[i].stateCode &&
                 voter_.constituencyCode == candidates[i].constituencyCode
             ) {
-                cc[_indx] = Candidate({
-                    name: candidates[i].name,
-                    partyShortcut: candidates[i].partyShortcut,
-                    partyFlag: candidates[i].partyFlag,
-                    voteCount: 0,
-                    aadharNumber: candidates[i].aadharNumber,
-                    stateCode: candidates[i].stateCode,
-                    constituencyCode: candidates[i].constituencyCode
-                });
+                cc[_indx] = candidates[i];
                 _indx++;
             }
         }
@@ -113,7 +78,7 @@ contract Ballot {
         view
         returns (bool voterEligible_)
     {
-        Voter storage voter_ = voter[voterAadharNumber];
+        Types.Voter storage voter_ = voter[voterAadharNumber];
         if (voter_.age >= 18 && voter_.isAlive) voterEligible_ = true;
     }
 
@@ -126,54 +91,33 @@ contract Ballot {
     function didCurrentVoterVoted(uint256 voterAadharNumber)
         public
         view
-        returns (bool userVoted_, Candidate memory candidate_)
+        returns (bool userVoted_, Types.Candidate memory candidate_)
     {
-        Voter storage voter_ = voter[voterAadharNumber];
-        userVoted_ = voter_.voted;
-        if (userVoted_) {
-            Candidate storage politician_ = candidate[voter_.votedTo];
-            candidate_ = Candidate({
-                name: politician_.name,
-                voteCount: 0,
-                aadharNumber: politician_.aadharNumber,
-                partyShortcut: politician_.partyShortcut,
-                partyFlag: politician_.partyFlag,
-                stateCode: politician_.stateCode,
-                constituencyCode: politician_.constituencyCode
-            });
-        }
+        userVoted_ = (voter[voterAadharNumber].votedTo != 0);
+        if (userVoted_)
+            candidate_ = candidate[voter[voterAadharNumber].votedTo];
     }
 
     /**
      * @dev Give your vote to candidate.
-     * @param candidateAadharNumber Aadhar Number of the candidate
+     * @param nominationNumber Aadhar Number of the candidate
      * @param voterAadharNumber Aadhar Number of the voter to avoid re-entry
      * @param currentTime_ To check if the election has started or not
      */
     function vote(
-        uint256 candidateAadharNumber,
+        uint256 nominationNumber,
         uint256 voterAadharNumber,
         uint256 currentTime_
     )
         public
         votingLinesAreOpen(currentTime_)
-        isEligibleVote(voterAadharNumber, candidateAadharNumber)
+        isEligibleVote(voterAadharNumber, nominationNumber)
     {
         // updating the current voter values
-        voter[voterAadharNumber].voted = true;
-        voter[voterAadharNumber].votedTo = candidateAadharNumber;
+        voter[voterAadharNumber].votedTo = nominationNumber;
 
-        // Incrementing the votes to the relevant candidate.
-        for (uint256 i = 0; i < candidates.length; i++) {
-            // we can't iterate via map to find who got most votes,
-            // so it has to be updated in array only
-            if (candidates[i].aadharNumber == candidateAadharNumber) {
-                candidates[i].voteCount++;
-                break;
-            }
-            // Candidate storage politician_ = candidate[candidateAadharNumber];
-            // politician_.voteCount++;
-        }
+        // updates the votes the politician
+        votesCount[nominationNumber] = votesCount[nominationNumber]++;
     }
 
     /**
@@ -214,16 +158,29 @@ contract Ballot {
     /**
      * @dev sends all candidate list with their votes count
      * @param currentTime_ Current epoch time of length 10.
-     * @return candidateList_ List of Candidate objects
+     * @return candidateList_ List of Candidate objects with votes count
      */
     function getResults(uint256 currentTime_)
         public
         view
-        returns (Candidate[] memory)
+        returns (Types.Results[] memory)
     {
-        // use "assert" for internal errors where as required for both internal & external
         require(votingEndTime < currentTime_);
-        return candidates;
+        Types.Results[] memory resultsList_ = new Types.Results[](
+            candidates.length
+        );
+        for (uint256 i = 0; i < candidates.length; i++) {
+            resultsList_[i] = Types.Results({
+                name: candidates[i].name,
+                partyShortcut: candidates[i].partyShortcut,
+                partyFlag: candidates[i].partyFlag,
+                nominationNumber: candidates[i].nominationNumber,
+                stateCode: candidates[i].stateCode,
+                constituencyCode: candidates[i].constituencyCode,
+                voteCount: votesCount[candidates[i].nominationNumber]
+            });
+        }
+        return resultsList_;
     }
 
     /**
@@ -239,14 +196,14 @@ contract Ballot {
     /**
      * @notice To check if the voter's age is greater than or equal to 18
      * @param voterAadhar_ Aadhar number of the current voter
-     * @param candidateAadhar_ Aadhar number of the candidate
+     * @param nominationNumber_ Nomination number of the candidate
      */
-    modifier isEligibleVote(uint256 voterAadhar_, uint256 candidateAadhar_) {
-        Voter storage voter_ = voter[voterAadhar_];
-        Candidate storage politician_ = candidate[candidateAadhar_];
+    modifier isEligibleVote(uint256 voterAadhar_, uint256 nominationNumber_) {
+        Types.Voter memory voter_ = voter[voterAadhar_];
+        Types.Candidate memory politician_ = candidate[nominationNumber_];
         require(voter_.age >= 18);
         require(voter_.isAlive);
-        require(!voter_.voted);
+        require(voter_.votedTo != 0);
         require(
             (politician_.stateCode == voter_.stateCode &&
                 politician_.constituencyCode == voter_.constituencyCode)
@@ -263,6 +220,136 @@ contract Ballot {
     }
 
     /**
+     * Dummy data for Candidates
+     * In the future, we can accept the same from construction,
+     * which will be called at the time of deployment
+     */
+    function initializeCandidateDatabase_() internal {
+        Types.Candidate[] memory candidates_ = new Types.Candidate[](14);
+
+        // Andhra Pradesh
+        candidates_[0] = Types.Candidate({
+            name: "Chandra Babu Naidu",
+            partyShortcut: "TDP",
+            partyFlag: "https://res.cloudinary.com/dj9ttsbgm/image/upload/v1648101065/tdp_qh1rkj.png",
+            nominationNumber: uint256(727477314982),
+            stateCode: uint8(10),
+            constituencyCode: uint8(1)
+        });
+        candidates_[1] = Types.Candidate({
+            name: "Jagan Mohan Reddy",
+            partyShortcut: "YSRCP",
+            partyFlag: "https://res.cloudinary.com/dj9ttsbgm/image/upload/v1648101065/ysrcp_sas311.png",
+            nominationNumber: uint256(835343722350),
+            stateCode: uint8(10),
+            constituencyCode: uint8(1)
+        });
+        candidates_[2] = Types.Candidate({
+            name: "G V Anjaneyulu",
+            partyShortcut: "TDP",
+            partyFlag: "https://res.cloudinary.com/dj9ttsbgm/image/upload/v1648101065/tdp_qh1rkj.png",
+            nominationNumber: uint256(969039304119),
+            stateCode: uint8(10),
+            constituencyCode: uint8(2)
+        });
+        candidates_[3] = Types.Candidate({
+            name: "Anil Kumar Yadav",
+            partyShortcut: "YSRCP",
+            partyFlag: "https://res.cloudinary.com/dj9ttsbgm/image/upload/v1648101065/ysrcp_sas311.png",
+            nominationNumber: uint256(429300763874),
+            stateCode: uint8(10),
+            constituencyCode: uint8(2)
+        });
+
+        // Bihar
+        candidates_[4] = Types.Candidate({
+            name: "Narendra Modi",
+            partyShortcut: "BJP",
+            partyFlag: "https://res.cloudinary.com/dj9ttsbgm/image/upload/v1648101064/bjp_nk4snw.png",
+            nominationNumber: uint256(895363124093),
+            stateCode: uint8(11),
+            constituencyCode: uint8(1)
+        });
+        candidates_[5] = Types.Candidate({
+            name: "Rahul Gandhi",
+            partyShortcut: "INC",
+            partyFlag: "https://res.cloudinary.com/dj9ttsbgm/image/upload/v1648101064/inc_s1oqn5.png",
+            nominationNumber: uint256(879824052764),
+            stateCode: uint8(11),
+            constituencyCode: uint8(1)
+        });
+        candidates_[6] = Types.Candidate({
+            name: "Tejaswi Yadav",
+            partyShortcut: "RJD",
+            partyFlag: "https://res.cloudinary.com/dj9ttsbgm/image/upload/v1648101065/1200px-RJD_Flag.svg_arrrvt.png",
+            nominationNumber: uint256(994080299774),
+            stateCode: uint8(11),
+            constituencyCode: uint8(1)
+        });
+        candidates_[7] = Types.Candidate({
+            name: "Arvind Kejriwal",
+            partyShortcut: "AAP",
+            partyFlag: "https://res.cloudinary.com/dj9ttsbgm/image/upload/v1648101065/aap_ujguyl.png",
+            nominationNumber: uint256(807033055701),
+            stateCode: uint8(11),
+            constituencyCode: uint8(1)
+        });
+        candidates_[8] = Types.Candidate({
+            name: "Jyoti Basu",
+            partyShortcut: "CPIM",
+            partyFlag: "https://res.cloudinary.com/dj9ttsbgm/image/upload/v1648101064/1024px-Cpim_party_symbol.svg_mu1gpp.png",
+            nominationNumber: uint256(615325500020),
+            stateCode: uint8(11),
+            constituencyCode: uint8(1)
+        });
+        candidates_[9] = Types.Candidate({
+            name: "Amit Shah",
+            partyShortcut: "BJP",
+            partyFlag: "https://res.cloudinary.com/dj9ttsbgm/image/upload/v1648101064/bjp_nk4snw.png",
+            nominationNumber: uint256(611996864962),
+            stateCode: uint8(11),
+            constituencyCode: uint8(2)
+        });
+        candidates_[10] = Types.Candidate({
+            name: "Priyanka Gandhi",
+            partyShortcut: "INC",
+            partyFlag: "https://res.cloudinary.com/dj9ttsbgm/image/upload/v1648101064/inc_s1oqn5.png",
+            nominationNumber: uint256(866627241136),
+            stateCode: uint8(11),
+            constituencyCode: uint8(2)
+        });
+        candidates_[11] = Types.Candidate({
+            name: "Lalu Yadav",
+            partyShortcut: "RJD",
+            partyFlag: "https://res.cloudinary.com/dj9ttsbgm/image/upload/v1648101065/1200px-RJD_Flag.svg_arrrvt.png",
+            nominationNumber: uint256(765724506305),
+            stateCode: uint8(11),
+            constituencyCode: uint8(2)
+        });
+        candidates_[12] = Types.Candidate({
+            name: "Manish Sisodia",
+            partyShortcut: "AAP",
+            partyFlag: "https://res.cloudinary.com/dj9ttsbgm/image/upload/v1648101065/aap_ujguyl.png",
+            nominationNumber: uint256(897855877716),
+            stateCode: uint8(11),
+            constituencyCode: uint8(2)
+        });
+        candidates_[13] = Types.Candidate({
+            name: "Prakash Karat",
+            partyShortcut: "CPIM",
+            partyFlag: "https://res.cloudinary.com/dj9ttsbgm/image/upload/v1648101064/1024px-Cpim_party_symbol.svg_mu1gpp.png",
+            nominationNumber: uint256(463774295590),
+            stateCode: uint8(11),
+            constituencyCode: uint8(2)
+        });
+
+        for (uint256 i = 0; i < candidates_.length; i++) {
+            candidate[candidates_[i].nominationNumber] = candidates_[i];
+            candidates.push(candidates_[i]);
+        }
+    }
+
+    /**
      * Dummy data for Aadhar users
      * In the future, we can have a an external API cal to centralized aadhar DB
      * https://ethereum.stackexchange.com/a/334
@@ -270,186 +357,168 @@ contract Ballot {
      */
     function initializeVoterDatabase_() internal {
         // Andhra Pradesh
-        voter[uint256(482253918244)] = Voter({
+        voter[uint256(482253918244)] = Types.Voter({
             name: "Suresh",
             aadharNumber: uint256(482253918244),
             age: uint8(21),
             stateCode: uint8(10),
             constituencyCode: uint8(1),
             isAlive: true,
-            voted: false,
             votedTo: uint256(0)
         });
-        voter[uint256(532122269467)] = Voter({
+        voter[uint256(532122269467)] = Types.Voter({
             name: "Ramesh",
             aadharNumber: uint256(532122269467),
             age: uint8(37),
             stateCode: uint8(10),
             constituencyCode: uint8(1),
             isAlive: false,
-            voted: false,
             votedTo: uint256(0)
         });
-        voter[uint256(468065932286)] = Voter({
+        voter[uint256(468065932286)] = Types.Voter({
             name: "Mahesh",
             aadharNumber: uint256(468065932286),
             age: uint8(26),
             stateCode: uint8(10),
             constituencyCode: uint8(1),
             isAlive: true,
-            voted: false,
             votedTo: uint256(0)
         });
-        voter[uint256(809961147437)] = Voter({
+        voter[uint256(809961147437)] = Types.Voter({
             name: "Krishna",
             aadharNumber: uint256(809961147437),
             age: uint8(19),
             stateCode: uint8(10),
             constituencyCode: uint8(2),
             isAlive: true,
-            voted: false,
             votedTo: uint256(0)
         });
-        voter[uint256(908623597782)] = Voter({
+        voter[uint256(908623597782)] = Types.Voter({
             name: "Narendra",
             aadharNumber: uint256(908623597782),
             age: uint8(36),
             stateCode: uint8(10),
             constituencyCode: uint8(2),
             isAlive: true,
-            voted: false,
             votedTo: uint256(0)
         });
-        voter[uint256(760344621247)] = Voter({
+        voter[uint256(760344621247)] = Types.Voter({
             name: "Raghu",
             aadharNumber: uint256(760344621247),
             age: uint8(42),
             stateCode: uint8(10),
             constituencyCode: uint8(2),
             isAlive: true,
-            voted: false,
             votedTo: uint256(0)
         });
         // Bihar
-        voter[uint256(908704156902)] = Voter({
+        voter[uint256(908704156902)] = Types.Voter({
             name: "Pushkar Kumar",
             aadharNumber: uint256(908704156902),
             age: uint8(25),
             stateCode: uint8(11),
             constituencyCode: uint8(1),
             isAlive: true,
-            voted: false,
             votedTo: uint256(0)
         });
-        voter[uint256(778925466180)] = Voter({
+        voter[uint256(778925466180)] = Types.Voter({
             name: "Kunal Kumar",
             aadharNumber: uint256(778925466180),
             age: uint8(37),
             stateCode: uint8(11),
             constituencyCode: uint8(1),
             isAlive: true,
-            voted: false,
             votedTo: uint256(0)
         });
-        voter[uint256(393071790055)] = Voter({
+        voter[uint256(393071790055)] = Types.Voter({
             name: "Kumar Sanket",
             aadharNumber: uint256(393071790055),
             age: uint8(29),
             stateCode: uint8(11),
             constituencyCode: uint8(2),
             isAlive: true,
-            voted: false,
             votedTo: uint256(0)
         });
-        voter[uint256(983881786161)] = Voter({
+        voter[uint256(983881786161)] = Types.Voter({
             name: "Pratik",
             aadharNumber: uint256(983881786161),
             age: uint8(40),
             stateCode: uint8(11),
             constituencyCode: uint8(2),
             isAlive: true,
-            voted: false,
             votedTo: uint256(0)
         });
-        voter[uint256(756623869645)] = Voter({
+        voter[uint256(756623869645)] = Types.Voter({
             name: "Aausi",
             aadharNumber: uint256(756623869645),
             age: uint8(85),
             stateCode: uint8(11),
             constituencyCode: uint8(1),
             isAlive: false,
-            voted: false,
             votedTo: uint256(0)
         });
-        voter[uint256(588109459505)] = Voter({
+        voter[uint256(588109459505)] = Types.Voter({
             name: "Pratiba",
             aadharNumber: uint256(588109459505),
             age: uint8(68),
             stateCode: uint8(11),
             constituencyCode: uint8(2),
             isAlive: false,
-            voted: false,
             votedTo: uint256(0)
         });
         // West Bengal
-        voter[uint256(967746320661)] = Voter({
+        voter[uint256(967746320661)] = Types.Voter({
             name: "Ruchika",
             aadharNumber: uint256(967746320661),
             age: uint8(26),
             stateCode: uint8(11),
             constituencyCode: uint8(1),
             isAlive: true,
-            voted: false,
             votedTo: uint256(0)
         });
-        voter[uint256(727938171119)] = Voter({
+        voter[uint256(727938171119)] = Types.Voter({
             name: "Rambabu",
             aadharNumber: uint256(727938171119),
             age: uint8(17),
             stateCode: uint8(11),
             constituencyCode: uint8(1),
             isAlive: true,
-            voted: false,
             votedTo: uint256(0)
         });
-        voter[uint256(609015917688)] = Voter({
+        voter[uint256(609015917688)] = Types.Voter({
             name: "Matajii",
             aadharNumber: uint256(609015917688),
             age: uint8(98),
             stateCode: uint8(11),
             constituencyCode: uint8(1),
             isAlive: true,
-            voted: false,
             votedTo: uint256(0)
         });
-        voter[uint256(620107691388)] = Voter({
+        voter[uint256(620107691388)] = Types.Voter({
             name: "Mamata",
             aadharNumber: uint256(620107691388),
             age: uint8(63),
             stateCode: uint8(11),
             constituencyCode: uint8(2),
             isAlive: false,
-            voted: false,
             votedTo: uint256(0)
         });
-        voter[uint256(403561319377)] = Voter({
+        voter[uint256(403561319377)] = Types.Voter({
             name: "Ravi Varma",
             aadharNumber: uint256(403561319377),
             age: uint8(42),
             stateCode: uint8(11),
             constituencyCode: uint8(2),
             isAlive: true,
-            voted: false,
             votedTo: uint256(0)
         });
-        voter[uint256(837970229674)] = Voter({
+        voter[uint256(837970229674)] = Types.Voter({
             name: "Rahul",
             aadharNumber: uint256(837970229674),
             age: uint8(56),
             stateCode: uint8(11),
             constituencyCode: uint8(2),
             isAlive: true,
-            voted: false,
             votedTo: uint256(0)
         });
     }
