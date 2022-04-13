@@ -4,7 +4,7 @@
 
 ## Important Links
 
-1. [Demo link](https://geekyants.github.io/sample-e-voting-system-ethereum/)<br />
+1. [Demo link](https://geekyants.page.link/evoting)<br />
 2. [Contract Address](https://rinkeby.etherscan.io/address/0xeD4Ab31BD523402809CEB0D8D4073E8A736C76bE)<br />
 3. [Contract Creator](https://rinkeby.etherscan.io/address/0xF2C9ef86c3c98Fc8C265469624dA35af2D72Fa06)<br />
 4. [Tx Hash of contract creation](https://rinkeby.etherscan.io/tx/0x5497693608f7b1236546256a8e0c9317ea0f1737844d02883821ca667ff638de)<br />
