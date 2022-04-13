@@ -72,10 +72,11 @@ export const useVote = () => {
   const castVote = useCallback(
     async (voterAadharNo: string, candidate: Candidate) => {
       try {
+        console.log(candidate);
         dispatch(setLoading(true));
         const voteStatus = await s1.castYourVote(
           voterAadharNo,
-          candidate.aadharNumber
+          candidate.nominationNumber
         );
         if (voteStatus.error) {
           toastError(voteStatus.msg);

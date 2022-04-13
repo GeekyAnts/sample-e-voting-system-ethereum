@@ -2,6 +2,13 @@
   <img width="460"  src="https://github.com/GeekyAnts/sample-e-voting-system-ethereum/blob/main/sample-images/4.png?raw=true">
 </p>
 
+## Important Links
+
+1. [Demo link](https://geekyants.github.io/sample-e-voting-system-ethereum/)<br />
+2. [Contract Address](https://rinkeby.etherscan.io/address/0xeD4Ab31BD523402809CEB0D8D4073E8A736C76bE)<br />
+3. [Contract Creator](https://rinkeby.etherscan.io/address/0xF2C9ef86c3c98Fc8C265469624dA35af2D72Fa06)<br />
+4. [Tx Hash of contract creation](https://rinkeby.etherscan.io/tx/0x5497693608f7b1236546256a8e0c9317ea0f1737844d02883821ca667ff638de)<br />
+
 ## E- Voting
 
 Electoral integrity is essential not just for democratic nations but also for state voter’s trust and liability. Political voting methods are crucial in this respect. From a government standpoint, electronic voting technologies can boost voter participation and confidence and rekindle interest in the voting system.
@@ -66,15 +73,15 @@ It is essential to ensure that assurance in voting does not diminish. In this pr
 
 ## e-Voting Requirements and Compliance by the Proposed System
 
-- ### Privacy - Keeping an individual’s vote secret
+- #### Privacy - Keeping an individual’s vote secret
 
-- ### Eligibility - Allowing only registered voters to vote, with each such voter voting only once
+- #### Eligibility - Allowing only registered voters to vote, with each such voter voting only once
 
-- ### Receipt Freeness - Voters should be unable to prove to a third party that they voted in a particular way
+- #### Receipt Freeness - Voters should be unable to prove to a third party that they voted in a particular way
 
-- ### Convenience - Voters must be able to vote easily, and everyone who is eligible must be able to vote
+- #### Convenience - Voters must be able to vote easily, and everyone who is eligible must be able to vote
 
-- ### Verifiability - The ability to trust the vote tallying process
+- #### Verifiability - The ability to trust the vote tallying process
 
 </br>
 
@@ -253,14 +260,6 @@ Truffle: v5.5.2
 
 Node: v14.17.0
 
-### Deployed to Rinkeby
-
-Contract Address: https://rinkeby.etherscan.io/address/0xB6976cfdA272536c51b0F251855EDa48164485EF
-
-Contract Creator: https://rinkeby.etherscan.io/address/0xF2C9ef86c3c98Fc8C265469624dA35af2D72Fa06
-
-Tx Hash of contract creation :https://rinkeby.etherscan.io/tx/0x6e0f54b7579fc6e9fcd00aa37d182ab2896471461f46ca09a21f63368bf12eb4
-
 ### Quick Start
 
 1.  cd into project repro
@@ -355,6 +354,18 @@ _Note Revert back all your local configurations & configure it to point to rinke
 | Lalu Yadav         | RJD        | Bihar          | Dehri        |
 | Manish Sisodia     | AAP        | Bihar          | Dehri        |
 | Prakash Karat      | CPIM       | Bihar          | Dehri        |
+
+## Team ✨
+
+Meet the amazing team who developed this project.
+
+<table>
+  <tr>
+    <td align="center"><a href="https://in.linkedin.com/in/sur950"><img src="https://avatars.githubusercontent.com/u/46712434?v=4" width="100px;" alt=""/><br /><sub><b>Suresh Konakanchi</b></sub></a><br /><a href="https://github.com/GeekyAnts/sample-e-voting-system-ethereum" title="Code">💻</a> <a href="https://github.com/GeekyAnts/sample-e-voting-system-ethereum/blob/main/README.md" title="Documentation">📖</a> <a href="https://github.com/GeekyAnts/sample-e-voting-system-ethereum/issues" title="Maintenance">🚧</a></td>
+    <td align="center"><a href="https://in.linkedin.com/in/pushkar-kumar-84183091"><img src="https://avatars.githubusercontent.com/u/41522922?v=4" width="100px;" alt=""/><br /><sub><b>Pushkar Kumar</b></sub></a><br /><a href="https://github.com/GeekyAnts/sample-e-voting-system-ethereum" title="Code">💻</a> <a href="https://github.com/GeekyAnts/sample-e-voting-system-ethereum/blob/main/README.md" title="Documentation">📖</a> <a href="https://github.com/GeekyAnts/sample-e-voting-system-ethereum/issues" title="Maintenance">🚧</a></td>
+    <td align="center"><a href="https://in.linkedin.com/in/ruchika-gupta-b18946134"><img src="https://avatars.githubusercontent.com/u/32259133?v=4" width="100px;" alt=""/><br /><sub><b>Ruchika Gupta</b></sub></a><br /><a href="https://github.com/GeekyAnts/sample-e-voting-system-ethereum" title="Code">💻</a> <a href="https://github.com/GeekyAnts/sample-e-voting-system-ethereum/blob/main/README.md" title="Documentation">📖</a> <a href="https://github.com/GeekyAnts/sample-e-voting-system-ethereum/issues" title="Maintenance">🚧</a></td>
+  </tr>
+  </table>
 
 ## Sample Images
 

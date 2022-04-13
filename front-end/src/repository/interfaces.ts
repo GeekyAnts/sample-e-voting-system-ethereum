@@ -1,6 +1,6 @@
 export interface Candidate {
   name: string;
-  aadharNumber: string;
+  nominationNumber: string;
   partyShortcut: string;
   voteCount: string;
   partyFlag: string /* added now */;

@@ -59,7 +59,7 @@ export function ResultsPage() {
       var candidateModel: Candidate[] = [];
       for (let i = 0; i < data.length; i++) {
         let d = { ...data[i] };
-        d.aadharNumber = data[i].aadharNumber.toString();
+        d.nominationNumber = data[i].nominationNumber.toString();
         d.voteCount = data[i].voteCount.toString();
         console.log(d);
         candidateModel?.push(d);
@@ -86,7 +86,7 @@ export function ResultsPage() {
         py="8"
         mt="10"
       >
-        <Heading size={["sm", "md"]} textAlign="center">
+        <Heading size={["sm"]} textAlign="center">
           GEN ELECTION TO VIDHAN SABHA TRENDS & RESULT MARCH-2022
         </Heading>
         <Box
@@ -111,7 +111,7 @@ export function ResultsPage() {
               display={"flex"}
               flexDir="row"
             >
-              <FormControl.Label mt="2">Select State</FormControl.Label>
+              <FormControl.Label mt="2">Select State  </FormControl.Label>
               <Box>
                 <Select
                   accessibilityLabel="Select State"
@@ -137,7 +137,7 @@ export function ResultsPage() {
               display={"flex"}
               flexDir="row"
             >
-              <FormControl.Label mt="2">Select Constituency</FormControl.Label>
+              <FormControl.Label mt="2">Select Constituency  </FormControl.Label>
               <Box>
                 <Select
                   w={["20", "full"]}
@@ -245,7 +245,7 @@ export function ResultsPage() {
             ) : selectedCandidates && selectedCandidates.length !== 0 ? (
               selectedCandidates.map(
                 ({
-                  aadharNumber,
+                  nominationNumber,
                   name,
                   partyShortcut,
                   partyFlag,
@@ -259,7 +259,7 @@ export function ResultsPage() {
                       borderRightWidth="2"
                       textAlign="center"
                     >
-                      <Text fontWeight={"semibold"}>{aadharNumber}</Text>
+                      <Text fontWeight={"semibold"}>{nominationNumber}</Text>
                     </Box>
                     <Box
                       py="1"

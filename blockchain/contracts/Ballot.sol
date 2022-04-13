@@ -117,7 +117,8 @@ contract Ballot {
         voter[voterAadharNumber].votedTo = nominationNumber;
 
         // updates the votes the politician
-        votesCount[nominationNumber] = votesCount[nominationNumber]++;
+        uint256 voteCount_ = votesCount[nominationNumber];
+        votesCount[nominationNumber] = voteCount_ + 1;
     }
 
     /**
@@ -203,7 +204,7 @@ contract Ballot {
         Types.Candidate memory politician_ = candidate[nominationNumber_];
         require(voter_.age >= 18);
         require(voter_.isAlive);
-        require(voter_.votedTo != 0);
+        require(voter_.votedTo == 0);
         require(
             (politician_.stateCode == voter_.stateCode &&
                 politician_.constituencyCode == voter_.constituencyCode)

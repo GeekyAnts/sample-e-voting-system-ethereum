@@ -52,9 +52,9 @@ export function VotingPage() {
           py="5"
         >
           <Icon
-            cursor={"pointer"}
             as={
               <MdOutlineArrowBack
+                cursor={"pointer"}
                 onClick={() => navigate("/")}
                 style={{
                   color: "white",

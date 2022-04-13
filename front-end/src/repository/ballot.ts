@@ -90,7 +90,7 @@ export class BallotService {
 
   async castYourVote(
     voterAadharNo: string,
-    candidateAadharNo: string
+    nominationNumber: string
   ): Promise<CastVoteResponse> {
     try {
       await this.ethEnabled();
@@ -100,11 +100,11 @@ export class BallotService {
       }
       let castVoteRes: CastVoteResponse;
       const castVote = await this.checkVoterVoted(voterAadharNo);
-      console.log(castVote, "castVote", candidateAadharNo, voterAadharNo);
+      console.log(castVote, "castVote", nominationNumber, voterAadharNo);
       // Check if voter already casted his vote
       if (castVote.canVote) {
         const giveVote = await this._ballotContract.vote(
-          candidateAadharNo,
+          nominationNumber,
           voterAadharNo,
           secondsSinceEpoch
         );
