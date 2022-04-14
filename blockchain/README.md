@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="460"  src="https://github.com/GeekyAnts/sample-e-voting-system-ethereum/blob/main/sample-images/4.png?raw=true">
+  <img width="100%"  src="https://github.com/GeekyAnts/sample-e-voting-system-ethereum/blob/main/sample-images/4.png?raw=true">
 </p>
 
 ## Important Links
@@ -83,7 +83,7 @@ It is essential to ensure that assurance in voting does not diminish. In this pr
 
 - #### Verifiability - The ability to trust the vote tallying process
 
-</br>
+<br />
 
 # Let's start with E-Voting Smart Contracts
 
@@ -361,9 +361,9 @@ Meet the amazing team who developed this project.
 
 <table>
   <tr>
-    <td align="center"><a href="https://in.linkedin.com/in/sur950"><img src="https://avatars.githubusercontent.com/u/46712434?v=4" width="100px;" alt=""/><br /><sub><b>Suresh Konakanchi</b></sub></a><br /><a href="https://github.com/GeekyAnts/sample-e-voting-system-ethereum" title="Code">💻</a> <a href="https://github.com/GeekyAnts/sample-e-voting-system-ethereum/blob/main/README.md" title="Documentation">📖</a> <a href="https://github.com/GeekyAnts/sample-e-voting-system-ethereum/issues" title="Maintenance">🚧</a></td>
-    <td align="center"><a href="https://in.linkedin.com/in/pushkar-kumar-84183091"><img src="https://avatars.githubusercontent.com/u/41522922?v=4" width="100px;" alt=""/><br /><sub><b>Pushkar Kumar</b></sub></a><br /><a href="https://github.com/GeekyAnts/sample-e-voting-system-ethereum" title="Code">💻</a> <a href="https://github.com/GeekyAnts/sample-e-voting-system-ethereum/blob/main/README.md" title="Documentation">📖</a> <a href="https://github.com/GeekyAnts/sample-e-voting-system-ethereum/issues" title="Maintenance">🚧</a></td>
-    <td align="center"><a href="https://in.linkedin.com/in/ruchika-gupta-b18946134"><img src="https://avatars.githubusercontent.com/u/32259133?v=4" width="100px;" alt=""/><br /><sub><b>Ruchika Gupta</b></sub></a><br /><a href="https://github.com/GeekyAnts/sample-e-voting-system-ethereum" title="Code">💻</a> <a href="https://github.com/GeekyAnts/sample-e-voting-system-ethereum/blob/main/README.md" title="Documentation">📖</a> <a href="https://github.com/GeekyAnts/sample-e-voting-system-ethereum/issues" title="Maintenance">🚧</a></td>
+    <td align="center"><a href="https://in.linkedin.com/in/sur950"><img src="https://avatars.githubusercontent.com/u/46712434?v=4" width="100px;" alt=""/><br /><sub><b>Suresh Konakanchi</b></sub></a><br /><a href="https://github.com/GeekyAnts/sample-e-voting-system-ethereum" title="Code">💻</a> <a href="https://geekyants.github.io/sample-e-voting-system-ethereum/" title="Documentation">📖</a> <a href="https://github.com/GeekyAnts/sample-e-voting-system-ethereum/issues" title="Maintenance">🚧</a></td>
+    <td align="center"><a href="https://twitter.com/95pushkar"><img src="https://avatars.githubusercontent.com/u/41522922?v=4" width="100px;" alt=""/><br /><sub><b>Pushkar Kumar</b></sub></a><br /><a href="https://github.com/GeekyAnts/sample-e-voting-system-ethereum" title="Code">💻</a> <a href="https://geekyants.github.io/sample-e-voting-system-ethereum/" title="Documentation">📖</a> <a href="https://github.com/GeekyAnts/sample-e-voting-system-ethereum/issues" title="Maintenance">🚧</a></td>
+    <td align="center"><a href="https://twitter.com/ruchikaSjv"><img src="https://avatars.githubusercontent.com/u/32259133?v=4" width="100px;" alt=""/><br /><sub><b>Ruchika Gupta</b></sub></a><br /><a href="https://github.com/GeekyAnts/sample-e-voting-system-ethereum" title="Code">💻</a> <a href="https://geekyants.github.io/sample-e-voting-system-ethereum/" title="Documentation">📖</a> <a href="https://github.com/GeekyAnts/sample-e-voting-system-ethereum/issues" title="Maintenance">🚧</a></td>
   </tr>
   </table>
 
